@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.uniquedu.cemetery.activity.WorshipActivity"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/grid_head"
+            style="@style/textview_main_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/grid_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/back"
+            android:paddingBottom="16dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="16dp"
+            android:text="  祭拜主题"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#E4E4E4"></View>
+    
+    <EditText
+        android:id="@+id/style_name"
+        android:layout_width="301dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:hint="姓名"/>
+    <EditText
+        android:id="@+id/style_title"
+        android:layout_width="301dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="11dp"
+        android:hint="留言标题"/>
+    <EditText
+        android:id="@+id/style_content"
+        android:layout_width="301dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="11dp"
+        android:hint="请输入你对逝者的问候留言"
+        />
+    <Button
+        android:id="@+id/complete"
+        android:layout_width="301dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="完成跪拜"
+        android:textSize="17sp"
+        android:textColor="#FFFFFF"
+        android:background="#F12B15"/>
+</LinearLayout>

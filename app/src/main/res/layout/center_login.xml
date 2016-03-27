@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textview_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/textview_main_head"
+            android:text="灵堂登录"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E4E4E4"
+        android:layout_alignParentBottom="true">
+    </View>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_bg_rect"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="14sp"
+        android:hint="灵堂编号"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:textSize="14sp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_bg_rect"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:hint="密码"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@color/app_red"
+        android:paddingTop="16dp"
+        android:paddingBottom="13dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        />
+</LinearLayout>
