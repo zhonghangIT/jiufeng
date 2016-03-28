@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="无照片信息" />
+        android:text="无纪念文选信息" />
 
     <com.uniquedu.cemetery.pulltorefresh.PullToRefreshListView
         android:id="@+id/anthlolay_listview"
