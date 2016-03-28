@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/background"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:paddingBottom="16dp"
             android:paddingLeft="10dp"
             android:paddingTop="16dp"
-            android:text="  在线祭扫"
+            android:text="    "
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -38,15 +38,14 @@
         android:layout_alignParentBottom="true"
         android:background="#E4E4E4"></View>
 
-   <GridView
-       android:id="@+id/worship_grid"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:numColumns="3"
-       android:layout_marginLeft="20dp"
-       android:layout_marginRight="20dp"
-       android:layout_marginTop="20dp"
-       android:verticalSpacing="20dp"
-       />
+    <GridView
+        android:id="@+id/worship_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:numColumns="3"
+        android:verticalSpacing="20dp" />
 
 </LinearLayout>

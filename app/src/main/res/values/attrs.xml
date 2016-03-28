@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <declare-styleable name="MyEditTextView">
+        <attr name="maxLength" format="integer" />
+        <attr name="textSize" format="reference|dimension" />
+    </declare-styleable>
     <declare-styleable name="PullToRefresh">
 
         <!-- A drawable to use as the background of the Refreshable View -->

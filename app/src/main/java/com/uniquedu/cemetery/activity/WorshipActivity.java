@@ -1,6 +1,7 @@
 package com.uniquedu.cemetery.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,13 +78,13 @@ public class WorshipActivity extends BaseActivity implements View.OnClickListene
                 String content = mStyle_content.getText().toString();
                 if (name.length() == 0 || title.length() == 0 || content.length() == 0) {
                     Toast.makeText(mContext, "请输入姓名，标题和留言", Toast.LENGTH_SHORT).show();
-                } else if (name.length() != 0 && title.length() != 0 && content.length() != 0) {
+                } else {
                     mRequestQueue = Volley.newRequestQueue(this);
                     StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 10 + "&typenum="+0, new Response.Listener<String>() {
+                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 10 + "&typenum=" + 0, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String s) {
-                            Toast.makeText(mContext,"跪拜成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "跪拜成功", Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -93,8 +94,9 @@ public class WorshipActivity extends BaseActivity implements View.OnClickListene
                     });
 
                     mRequestQueue.add(stringRequest);
-
-                    finish();
+                    //这里使用了singleTask的启动模式，会自动关闭以上界面
+                    Intent intent = new Intent(WorshipActivity.this, DeadHomePageActivity.class);
+                    startActivity(intent);
                 }
                 break;
             default:

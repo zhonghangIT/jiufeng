@@ -2,10 +2,12 @@ package com.uniquedu.cemetery.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.uniquedu.cemetery.BaseActivity;
 import com.uniquedu.cemetery.R;
@@ -15,6 +17,7 @@ import com.uniquedu.cemetery.R;
  */
 public class WebInfomationActivity extends BaseActivity {
     private WebView mWebView;
+    private ProgressBar mProgressbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,7 @@ public class WebInfomationActivity extends BaseActivity {
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         mWebView = (WebView) findViewById(R.id.webview);
+        mProgressbar = (ProgressBar) findViewById(R.id.progressBar);
         //启用支持javascript
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -34,6 +38,30 @@ public class WebInfomationActivity extends BaseActivity {
                 return true;
             }
         });
+        mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadUrl(url);
+    }
+
+    public class WebChromeClient extends android.webkit.WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if (newProgress == 100) {
+                mProgressbar.setVisibility(View.GONE);
+            } else {
+                if (mProgressbar.getVisibility() == View.GONE)
+                    mProgressbar.setVisibility(View.VISIBLE);
+                mProgressbar.setProgress(newProgress);
+            }
+            super.onProgressChanged(view, newProgress);
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
+            mWebView.goBack();// 返回前一个页面
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

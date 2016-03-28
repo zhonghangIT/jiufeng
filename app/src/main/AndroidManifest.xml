@@ -25,7 +25,9 @@
         <activity android:name=".activity.WorshipStyleActivity" />
         <activity
             android:name=".activity.DeadHomePageActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MPlayerActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -73,6 +75,11 @@
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".activity.ShowAnthologyActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity
+            android:name=".activity.SeachNewsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>

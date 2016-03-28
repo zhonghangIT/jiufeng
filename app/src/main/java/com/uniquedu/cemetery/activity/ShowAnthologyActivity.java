@@ -1,9 +1,11 @@
 package com.uniquedu.cemetery.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.uniquedu.cemetery.Address;
@@ -37,9 +40,13 @@ import java.util.Map;
  * Created by ZhongHang on 2016/3/28.
  */
 public class ShowAnthologyActivity extends BaseActivity {
-    private TextView mTextViewHead;
     private WebView mWebView;
-    Anthology mAnthology;
+    private Anthology mAnthology;
+    private TextView mTextViewTitle;
+    private TextView mTextViewSrc;
+    private TextView mTextViewAuthor;
+    private TextView mTextViewTime;
+    private SimpleDraweeView mHeadView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,12 +54,18 @@ public class ShowAnthologyActivity extends BaseActivity {
         setContentView(R.layout.activity_show_anthology);
         Intent intent = getIntent();
         mAnthology = intent.getParcelableExtra("anthology");
-        mTextViewHead = (TextView) findViewById(R.id.textview_head);
+        mTextViewTitle = (TextView) findViewById(R.id.textview_title);
+        mTextViewSrc = (TextView) findViewById(R.id.textview_src);
+        mTextViewTime = (TextView) findViewById(R.id.textview_time);
+        mTextViewAuthor = (TextView) findViewById(R.id.textview_author);
+        mHeadView = (SimpleDraweeView) findViewById(R.id.image_head);
         mWebView = (WebView) findViewById(R.id.webview);
         mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.getSettings().setUseWideViewPort(true);
-        mTextViewHead.setText(mAnthology.getArticleTitle());
+        String url = Address.WONSHIP_ANTHOLOGY_WEB + "?id=" + mAnthology.getId();
+        mWebView.loadUrl(url);
         getData();
     }
 
@@ -73,7 +86,21 @@ public class ShowAnthologyActivity extends BaseActivity {
                     JSONObject obj = new JSONObject(response);
                     AnthologyInfo info = gson.fromJson(obj.getJSONObject("pInfo").toString(), AnthologyInfo.class);
 //                    mWebView.
-                    mWebView.loadDataWithBaseURL(null, info.getArticleHtml(), "text/html", "utf-8", null);
+                    if (TextUtils.isEmpty(info.getArticleImg())) {
+                        mHeadView.setVisibility(View.GONE);
+                    } else {
+                        mHeadView.setImageURI(Uri.parse(Address.URL + info.getArticleImg()));
+                    }
+                    mTextViewTitle.setText(info.getArticleTitle());
+                    if (!TextUtils.isEmpty(info.getArticleSource())) {
+                        mTextViewSrc.setText(info.getArticleSource());
+                    }
+                    if (!TextUtils.isEmpty(info.getCreateUser())) {
+                        mTextViewAuthor.setText(info.getCreateUser());
+                    }
+                    if (!TextUtils.isEmpty(info.getCreateDate())) {
+                        mTextViewTime.setText(info.getCreateDate());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -88,8 +115,7 @@ public class ShowAnthologyActivity extends BaseActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("callback", "callbakename");
-//                params.put("id", mAnthology.getId());
-                params.put("id", "25");
+                params.put("id", mAnthology.getId());
                 return params;
             }
         };

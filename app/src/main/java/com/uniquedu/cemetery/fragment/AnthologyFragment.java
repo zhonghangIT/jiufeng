@@ -83,7 +83,7 @@ public class AnthologyFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Anthology anthology = mAnthologies.get(position);
+                Anthology anthology = mAnthologies.get(position - 1);//此处position一定记得减一，因为加了header
                 Intent intent = new Intent(getActivity(), ShowAnthologyActivity.class);
                 intent.putExtra("anthology", anthology);
                 startActivity(intent);

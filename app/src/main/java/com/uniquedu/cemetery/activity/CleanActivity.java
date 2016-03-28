@@ -1,6 +1,7 @@
 package com.uniquedu.cemetery.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,12 +24,13 @@ import com.uniquedu.cemetery.R;
  * Created by Administrator on 2016/3/17.
  */
 public class CleanActivity extends BaseActivity implements View.OnClickListener {
-    private TextView mGrid_back,mGrid_head;
+    private TextView mGrid_back, mGrid_head;
     private Button mComplete;
     private EditText mStyle_name, mStyle_title, mStyle_content;
     private String id;
     private Context mContext;
     private RequestQueue mRequestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +66,13 @@ public class CleanActivity extends BaseActivity implements View.OnClickListener 
                 String content = mStyle_content.getText().toString();
                 if (name.length() == 0 || title.length() == 0 || content.length() == 0) {
                     Toast.makeText(mContext, "请输入姓名，标题和留言", Toast.LENGTH_SHORT).show();
-                } else if (name.length() != 0 && title.length() != 0 && content.length() != 0) {
+                } else {
                     mRequestQueue = Volley.newRequestQueue(this);
                     StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 3 + "&typenum="+0, new Response.Listener<String>() {
+                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 3 + "&typenum=" + 0, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String s) {
-                            Toast.makeText(mContext,"跪拜成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "跪拜成功", Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -81,8 +83,9 @@ public class CleanActivity extends BaseActivity implements View.OnClickListener 
 
                     mRequestQueue.add(stringRequest);
 
-
-                    finish();
+                    //这里使用了singleTask的启动模式，会自动关闭以上界面
+                    Intent intent = new Intent(getApplicationContext(), DeadHomePageActivity.class);
+                    startActivity(intent);
                 }
                 break;
             default:

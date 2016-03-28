@@ -95,7 +95,7 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        if (back != null) {
+        if(back!=null){
             initData(back);
         }
     }
@@ -107,7 +107,6 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
         flowerState(back);
         cupState(back);
         incensoryState(back);
-        mp3State(back);
     }
 
 
@@ -160,12 +159,14 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
             case R.id.imageview_worship:
                 Intent intent = new Intent(getActivity(), WorshipStyleActivity.class);
                 Bundle b = new Bundle();
-                b.putString("id", mInformations.get(0).getMemorialID().toString());
+                b.putString("id", back.getId());
                 intent.putExtra("id", b);
                 startActivity(intent);
                 break;
             case R.id.imageview_music:
                 Intent intent1 = new Intent(getActivity(), MPlayerActivity.class);
+                intent1.putExtra("musicId", back.getMp3State());
+                intent1.putExtra("id", back.getId());
                 startActivity(intent1);
                 break;
             case R.id.imageview_head:
@@ -246,24 +247,5 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
-    //MP3
-    private void mp3State(DeadCallBack back) {
-        switch (back.getMp3State()) {
-            case "1":
-                break;
-            case "2":
-                break;
-            case "3":
-                break;
-            case "4":
-                break;
-        }
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(getContext(), MusicService.class);
-        getContext().stopService(intent);
-    }
 }
