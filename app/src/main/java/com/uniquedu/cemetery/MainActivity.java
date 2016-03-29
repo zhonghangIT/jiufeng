@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uniquedu.cemetery.adapter.MainPagerAdapter;
 import com.uniquedu.cemetery.fragment.CenterFragment;
@@ -25,6 +27,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public static final int WORSHIP = 1;
     public static final int CENTER = 2;
     private List<Fragment> mPages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +45,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mTextViewWorship.setOnClickListener(this);
         mTextViewCenter.setOnClickListener(this);
         mTextViewScan.setOnClickListener(this);
-        mPages=new ArrayList<>();
+        mPages = new ArrayList<>();
         mPages.add(new InfomationFragment());
         mPages.add(new DeadGridFragment());
         mPages.add(new CenterFragment());
         mViewPager.setOffscreenPageLimit(3);
-        FragmentManager manager=getSupportFragmentManager();
-        MainPagerAdapter pagerAdapter=new MainPagerAdapter(manager,mPages);
+        FragmentManager manager = getSupportFragmentManager();
+        MainPagerAdapter pagerAdapter = new MainPagerAdapter(manager, mPages);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -91,17 +94,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textview_infomation:
-                mViewPager.setCurrentItem(INFOMATION,false);
+                mViewPager.setCurrentItem(INFOMATION, false);
                 break;
             case R.id.textview_worship:
-                mViewPager.setCurrentItem(WORSHIP,false);
+                mViewPager.setCurrentItem(WORSHIP, false);
                 break;
             case R.id.textview_center:
-                mViewPager.setCurrentItem(CENTER,false);
+                mViewPager.setCurrentItem(CENTER, false);
                 break;
             case R.id.textview_scan:
                 //只有点击扫描的时候是启动一个新的界面去扫描
                 break;
         }
     }
+
+    private long mExitTime;
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                Object mHelperUtils;
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                mExitTime = System.currentTimeMillis();
+
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
