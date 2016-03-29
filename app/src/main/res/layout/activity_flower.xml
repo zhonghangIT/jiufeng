@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/white">
 
         <TextView
@@ -57,48 +57,103 @@
                 android:numColumns="4"
                 android:verticalSpacing="20dp" />
 
-            <EditText
-                android:id="@+id/flower_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg_rect"
-                android:hint="姓名" />
+                android:layout_marginTop="20dp">
 
-            <com.uniquedu.cemetery.view.MyEditTextView
-                android:id="@+id/flower_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="11dp"
-                android:background="@drawable/edittext_bg_rect"
-                android:hint="留言标题"
-                myedit:maxLength="50"
-                myedit:textSize="12dp" />
+                <EditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_bg_rect"
+                    android:hint="姓名"
+                    android:paddingRight="30dp" />
 
-            <com.uniquedu.cemetery.view.MyEditTextView
-                android:id="@+id/flower_content"
+                <ImageView
+                    android:id="@+id/imageview_add_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="20dp"
+                    android:src="@mipmap/add" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="11dp"
-                android:background="@drawable/edittext_bg_rect"
-                android:hint="请输入你对逝者的问候留言"
-                myedit:maxLength="200"
-                myedit:textSize="12dp" />
+                android:layout_marginTop="11dp">
+
+                <com.uniquedu.cemetery.view.MyEditTextView
+                    android:id="@+id/edit_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edittext_bg_rect"
+                    android:hint="留言标题"
+                    myedit:maxLength="50"
+                    myedit:textSize="12dp" />
+
+                <ImageView
+                    android:id="@+id/imageview_add_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="20dp"
+                    android:src="@mipmap/add" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="11dp">
+
+                <com.uniquedu.cemetery.view.MyEditTextView
+                    android:id="@+id/edit_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_bg_rect"
+                    android:gravity="left|top"
+                    android:hint="请输入您对逝者的问候留言"
+                    android:minHeight="200dp"
+                    myedit:maxLength="200"
+                    myedit:textSize="12dp" />
+
+                <ImageView
+                    android:id="@+id/imageview_add_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="20dp"
+                    android:src="@mipmap/add" />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/flower_complete"
-                android:layout_width="301dp"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:background="#F12B15"
                 android:text="完成跪拜"

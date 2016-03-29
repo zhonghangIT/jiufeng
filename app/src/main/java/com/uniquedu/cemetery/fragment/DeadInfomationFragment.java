@@ -94,12 +94,12 @@ public class DeadInfomationFragment extends BaseFragment {
 
     private void setData(DeadInformation information) {
 
-        text_dead_name.setText(information.getDeadName());
-        text_dead_birthday.setText(information.getBirthday());
-        text_dead_feteday.setText(information.getFeteday());
-        text_dead_nationality.setText(information.getNationality());
-        text_dead_nativeplace.setText(information.getNativeplace());
-        text_dead_sex.setText(information.getSex());
+        text_dead_name.setText("姓名：" + information.getDeadName());
+        text_dead_birthday.setText("生辰：" + information.getBirthday());
+        text_dead_feteday.setText("祭日：" + information.getFeteday());
+        text_dead_nationality.setText("民族：" + information.getNationality());
+        text_dead_nativeplace.setText("籍贯：" + information.getNativeplace());
+        text_dead_sex.setText("性别：" + information.getSex());
         Spanned spanned = Html.fromHtml(information.getSummary());
         text_dead_summary.setText(spanned);
     }

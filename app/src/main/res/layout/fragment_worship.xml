@@ -171,4 +171,14 @@
         android:layout_marginTop="96dp"
         android:scaleType="fitStart"
         android:src="@mipmap/wine1" />
+
+    <ImageView
+        android:id="@+id/imageview_wine2"
+        android:layout_width="130dp"
+        android:layout_height="56dp"
+        android:layout_below="@+id/center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp"
+        android:scaleType="fitEnd"
+        android:src="@mipmap/wine1" />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.uniquedu.cemetery.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.uniquedu.cemetery.Address;
 import com.uniquedu.cemetery.BaseActivity;
 import com.uniquedu.cemetery.R;
 
@@ -38,6 +40,11 @@ public class SeachNewsActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.button_search:
                 Toast.makeText(SeachNewsActivity.this, "搜索关键字" + mEditTextCode.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), SearchNewsResActivity.class);
+                String keyword=mEditTextCode.getText().toString().trim();
+                intent.putExtra("url", Address.NEWS_SEARCH + keyword);
+                intent.putExtra("keyword",keyword);
+                startActivity(intent);
                 break;
             default:
                 break;

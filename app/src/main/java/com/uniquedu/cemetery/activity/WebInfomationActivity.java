@@ -8,21 +8,32 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.uniquedu.cemetery.Address;
 import com.uniquedu.cemetery.BaseActivity;
 import com.uniquedu.cemetery.R;
 
 /**
  * Created by ZhongHang on 2016/3/27.
+ * 用于显示新闻的详情
  */
 public class WebInfomationActivity extends BaseActivity {
     private WebView mWebView;
     private ProgressBar mProgressbar;
+    private TextView mTextViewBack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+        mTextViewBack = (TextView) findViewById(R.id.textview_back);
+        mTextViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         mWebView = (WebView) findViewById(R.id.webview);
@@ -34,7 +45,11 @@ public class WebInfomationActivity extends BaseActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if (url.startsWith("http")) {
+                    view.loadUrl(url);
+                } else {
+                    view.loadUrl(Address.URL + url);
+                }
                 return true;
             }
         });

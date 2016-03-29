@@ -47,6 +47,7 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
      * 酒的图片
      */
     private ImageView mImageViewWine;
+    private ImageView mImageViewWine2;
     /**
      * 香的图片
      */
@@ -89,13 +90,14 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
         mTextViewAgeRight = (TextView) view.findViewById(R.id.textview_age_right);
         mImageViewFlower = (ImageView) view.findViewById(R.id.imageview_flower);
         mImageViewWine = (ImageView) view.findViewById(R.id.imageview_wine);
+        mImageViewWine2 = (ImageView) view.findViewById(R.id.imageview_wine2);
         mImageViewThus = (ImageView) view.findViewById(R.id.imageview_thus);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(back!=null){
+        if (back != null) {
             initData(back);
         }
     }
@@ -180,6 +182,7 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
 
     //鲜花
     private void flowerState(DeadCallBack back) {
+        mImageViewFlower.setVisibility(View.VISIBLE);
         switch (back.getFlowerState()) {
             case "1":
                 mImageViewFlower.setImageResource(R.mipmap.flower1);
@@ -206,32 +209,43 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
                 mImageViewFlower.setImageResource(R.mipmap.flower8);
                 break;
             default:
+                mImageViewFlower.setVisibility(View.INVISIBLE);
                 break;
         }
     }
 
     //酒
     private void incensoryState(DeadCallBack back) {
+        mImageViewWine.setVisibility(View.VISIBLE);
+        mImageViewWine2.setVisibility(View.VISIBLE);
         switch (back.getCupState()) {
             case "1":
                 mImageViewWine.setImageResource(R.mipmap.wine1);
+                mImageViewWine2.setImageResource(R.mipmap.wine1);
                 break;
             case "2":
                 mImageViewWine.setImageResource(R.mipmap.wine2);
+                mImageViewWine2.setImageResource(R.mipmap.wine2);
                 break;
             case "3":
                 mImageViewWine.setImageResource(R.mipmap.wine3);
+                mImageViewWine2.setImageResource(R.mipmap.wine3);
                 break;
             case "4":
                 mImageViewWine.setImageResource(R.mipmap.wine4);
+                mImageViewWine2.setImageResource(R.mipmap.wine4);
                 break;
-
+            default:
+                mImageViewWine.setVisibility(View.INVISIBLE);
+                mImageViewWine2.setVisibility(View.INVISIBLE);
+                break;
         }
 
     }
 
     //香
     private void cupState(DeadCallBack back) {
+        mImageViewThus.setVisibility(View.VISIBLE);
         switch (back.getIncensoryState()) {
             case "1":
                 mImageViewThus.setImageResource(R.mipmap.thus_red);
@@ -243,6 +257,7 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
                 mImageViewThus.setImageResource(R.mipmap.thus_god);
                 break;
             default:
+                mImageViewThus.setVisibility(View.INVISIBLE);
                 break;
         }
     }

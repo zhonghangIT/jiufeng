@@ -1,42 +1,42 @@
-package com.uniquedu.cemetery.fragment;
+package com.uniquedu.cemetery.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.uniquedu.cemetery.Address;
-import com.uniquedu.cemetery.BaseFragment;
+import com.uniquedu.cemetery.BaseActivity;
 import com.uniquedu.cemetery.MyWebChromeClient;
 import com.uniquedu.cemetery.R;
-import com.uniquedu.cemetery.activity.SeachNewsActivity;
-import com.uniquedu.cemetery.activity.WebInfomationActivity;
 
 /**
- * Created by ZhongHang on 2016/3/4.
+ * Created by ZhongHang on 2016/3/29.
  */
-public class InfomationFragment extends BaseFragment {
+public class SearchNewsResActivity extends BaseActivity {
     private WebView mWebView;
-    private ImageView mImageViewSearch;
+    private TextView mTextViewBack;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_infomation, null);
-        mWebView = (WebView) view.findViewById(R.id.webview);
-        mImageViewSearch = (ImageView) view.findViewById(R.id.imageview_right);
-        mImageViewSearch.setOnClickListener(new View.OnClickListener() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_news_res);
+        Intent intent = getIntent();
+        String url = intent.getStringExtra("url");
+        String keyword = intent.getStringExtra("keyword");
+        mWebView = (WebView) findViewById(R.id.webview);
+        mTextViewBack = (TextView) findViewById(R.id.textview_back);
+        mTextViewBack.setText(" " + keyword);
+        mTextViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SeachNewsActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         //启用支持javascript
@@ -56,17 +56,17 @@ public class InfomationFragment extends BaseFragment {
             }
         });
         mWebView.setWebChromeClient(new MyWebChromeClient());
-        mWebView.loadUrl(Address.NEWS_INFOMATION_LIST);
-        return view;
+        mWebView.loadUrl(url);
     }
 
     class MyJs {
         @JavascriptInterface
         public void toWebActivity(String title, String url) {
-            Intent intent = new Intent(getActivity(), WebInfomationActivity.class);
+            Intent intent = new Intent(getApplicationContext(), WebInfomationActivity.class);
             intent.putExtra("url", Address.URL + url);
             intent.putExtra("title", title);
             startActivity(intent);
         }
     }
+
 }

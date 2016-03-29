@@ -38,8 +38,8 @@ import java.util.Map;
  */
 public class MPlayerActivity extends BaseActivity {
     private String[] musicNames = {"生死不离", "父亲", "母亲", "父亲母亲"};
-    private String[] musicTime = {"刘和刚  04:11", "彭丽媛  04:33", "彭丽媛  04:40",
-            "王宏伟  04:41"};
+    private String[] musicTime = {"04:11", "04:33", "04:40",
+            "04:41"};
     private int[] musicrul = {R.raw.life_and_death, R.raw.father, R.raw.mother, R.raw.father_mother};
     private ListView musicList;
     private List<Map<String, String>> listems;

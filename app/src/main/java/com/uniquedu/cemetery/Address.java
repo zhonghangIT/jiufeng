@@ -6,10 +6,12 @@ package com.uniquedu.cemetery;
 public class Address {
     public static final String URL = "http://219.140.77.9/";
     public static final String NEWS_INFOMATION_LIST = URL + "app-news/news-list.html";
+    public static final String NEWS_SEARCH = URL + "app-news/news-search.html?keyword=";
     //网上灵堂分页带查询接口
     public static final String PersonalMemorial = URL + "mvcwebmis/nologin/FindWithPagerForPersonalMemorial";
     //图片前缀
     public static final String IMAGEADDRESS = URL + "mvcwebmis";
+    public static final String GET_DIC=URL+"/mvcwebmis/nologin/GetDicForNoLogin";
     //歌曲播放地址
     public static final String MUSIC = URL + "mvcwebmis/nologin/ChangeMp3State";
     //灵堂初始化
