@@ -129,7 +129,7 @@ public class ThouActivity extends BaseActivity implements View.OnClickListener, 
                 } else {
                     mRequestQueue = Volley.newRequestQueue(this);
                     StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 6 + "&typenum=" + mThou_id,
+                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 4 + "&typenum=" + mThou_id,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {

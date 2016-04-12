@@ -4,7 +4,8 @@ package com.uniquedu.cemetery;
  * Created by baoyi on 2016/3/7.
  */
 public class Address {
-    public static final String URL = "http://219.140.77.9/";
+    public static final String URL = "http://www.whjfs.com/";
+//    public static final String URL = "http://219.140.77.9/";
     public static final String NEWS_INFOMATION_LIST = URL + "app-news/news-list.html";
     public static final String NEWS_SEARCH = URL + "app-news/news-search.html?keyword=";
     //网上灵堂分页带查询接口

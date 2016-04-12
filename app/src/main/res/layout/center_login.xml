@@ -88,7 +88,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="11dp"
-        android:text="电     话：027-87635476" />
+        android:text="业务咨询：027-87635476" />
 
     <TextView
         android:layout_width="match_parent"
@@ -96,7 +96,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="11dp"
-        android:text="传     真：027-87635476" />
+        android:text="网站咨询：027-87745426" />
 
     <TextView
         android:layout_width="match_parent"
@@ -104,5 +104,13 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="11dp"
-        android:text="E-mail：whjfs123@163.com" />
+        android:text="业务咨询邮箱：jfyws@whjfs.com" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="11dp"
+        android:text="网站咨询邮箱：jfbgs@whjfs.com" />
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -48,21 +49,23 @@ public class PhotoFragment extends BaseFragment {
     private ListView mListView;
     private PullToRefreshListView mPullRefreshView;
     private LayoutInflater mInflater;
-    private Dead dead;
+    private String deadId;
     private ArrayList<PhotoBean> mList;
     private int page = 1;
     private PhotoAdapter mAdapter;
     private static final int STATE_LOAD_MORE = 0;
     private static final int STATE_LOAD_REFRESH = 1;
+    private TextView mTextViewNull;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photolist, null);
-        dead = ((DeadHomePageActivity) getActivity()).mDead;
+        deadId = ((DeadHomePageActivity) getActivity()).mDeadId;
         mInflater = inflater;
         mPullRefreshView = (PullToRefreshListView) view.findViewById(R.id.photo_listview);
         mListView = mPullRefreshView.getRefreshableView();
+        mTextViewNull = (TextView) view.findViewById(R.id.textview_null);
         mList = new ArrayList<>();
         mAdapter = new PhotoAdapter(inflater, mList);
         mListView.setAdapter(mAdapter);
@@ -99,12 +102,12 @@ public class PhotoFragment extends BaseFragment {
         loadmore.put("callback", "callbakename");
         loadmore.put("page", "" + page);
         loadmore.put("rows", "12");
-        loadmore.put("id", dead.getId());
+        loadmore.put("id", deadId);
         getPhotos(loadmore, state);
     }
 
     private void getPhotos(final HashMap<String, String> params, final int state) {
-        if (dead != null) {
+        if (deadId != null) {
             StringRequest request = new StringRequest(Request.Method.POST, Address.WORSHIP_PHOTO, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -123,7 +126,11 @@ public class PhotoFragment extends BaseFragment {
                             mList.clear();
                             mList.addAll(list);
                             mAdapter.setPhotos(mList);
+                            mPullRefreshView.setVisibility(View.VISIBLE);
+                            mTextViewNull.setVisibility(View.INVISIBLE);
                         } else {
+                            mTextViewNull.setVisibility(View.VISIBLE);
+                            mPullRefreshView.setVisibility(View.INVISIBLE);
                             //显示无数据
                         }
                         mPullRefreshView.onRefreshComplete();

@@ -19,6 +19,7 @@ import com.uniquedu.cemetery.BaseFragment;
 import com.uniquedu.cemetery.R;
 import com.uniquedu.cemetery.activity.DeadHomePageActivity;
 import com.uniquedu.cemetery.bean.Dead;
+import com.uniquedu.cemetery.bean.DeadCallBack;
 import com.uniquedu.cemetery.bean.DeadInformation;
 
 import java.util.List;
@@ -55,9 +56,8 @@ public class DeadInfomationFragment extends BaseFragment {
         text_dead_summary = (TextView) view.findViewById(R.id.text_dead_summary);
     }
 
-    public void infodate(final List<DeadInformation> infomations) {
-        Dead dead = ((DeadHomePageActivity) getActivity()).mDead;
-        String url = dead.getManPhoto();
+    public void infodate(final DeadCallBack back) {
+        String url = back.getManPhoto();
         if (!TextUtils.isEmpty(url)) {
             url = url.trim();
             if (url.startsWith(".")) ;
@@ -66,17 +66,17 @@ public class DeadInfomationFragment extends BaseFragment {
             image_head.setImageURI(Uri.parse(imageUrl));
         }
         mTabLayout.removeAllTabs();
-        if (dead.getTombType().trim().equals("单人馆")) {
-            mTabLayout.addTab(mTabLayout.newTab().setText(dead.getMan()));
+        if (back.getTombType().trim().equals("单人馆")) {
+            mTabLayout.addTab(mTabLayout.newTab().setText(back.getRows().get(0).getDeadName()));
         } else {
-            mTabLayout.addTab(mTabLayout.newTab().setText(dead.getMan()));
-            mTabLayout.addTab(mTabLayout.newTab().setText(dead.getWoman()));
+            mTabLayout.addTab(mTabLayout.newTab().setText(back.getRows().get(0).getDeadName()));
+            mTabLayout.addTab(mTabLayout.newTab().setText(back.getRows().get(1).getDeadName()));
         }
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                setData(infomations.get(position));
+                setData(back.getRows().get(position));
             }
 
             @Override
@@ -89,7 +89,7 @@ public class DeadInfomationFragment extends BaseFragment {
 
             }
         });
-        setData(infomations.get(0));
+        setData(back.getRows().get(0));
     }
 
     private void setData(DeadInformation information) {

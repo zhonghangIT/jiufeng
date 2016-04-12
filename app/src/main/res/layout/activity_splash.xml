@@ -19,4 +19,5 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:src="@mipmap/qidong02" />
+
 </RelativeLayout>

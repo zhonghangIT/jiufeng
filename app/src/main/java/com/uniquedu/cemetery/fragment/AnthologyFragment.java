@@ -51,7 +51,7 @@ public class AnthologyFragment extends BaseFragment {
     private PullToRefreshListView mPullToRefreshView;
     private List<Anthology> mAnthologies;
     private AnthologyAdapter mAdapter;
-    private Dead dead;
+    private String deadId;
     private int page = 1;
     private static final int STATE_LOAD_MORE = 0;
     private static final int STATE_LOAD_REFRESH = 1;
@@ -61,7 +61,7 @@ public class AnthologyFragment extends BaseFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_anthology, null);
-        dead = ((DeadHomePageActivity) getActivity()).mDead;
+        deadId = ((DeadHomePageActivity) getActivity()).mDeadId;
         mPullToRefreshView = (PullToRefreshListView) view.findViewById(R.id.anthlolay_listview);
         mTextViewNull = (TextView) view.findViewById(R.id.textview_null);
         mListView = mPullToRefreshView.getRefreshableView();
@@ -102,7 +102,7 @@ public class AnthologyFragment extends BaseFragment {
         loadmore.put("callback", "callbakename");
         loadmore.put("page", "" + page);
         loadmore.put("rows", "12");
-        loadmore.put("id", dead.getId());
+        loadmore.put("id", deadId);
         getInfomation(loadmore, state);
     }
 

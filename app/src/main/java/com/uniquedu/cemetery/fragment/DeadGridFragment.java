@@ -79,10 +79,8 @@ public class DeadGridFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), DeadHomePageActivity.class);
-                Bundle bundle = new Bundle();
                 Dead dead = mList.get(position);
-                bundle.putSerializable("dead", dead);
-                intent.putExtras(bundle);
+                intent.putExtra(DeadHomePageActivity.EXTRA_DEAID,dead.getId());
                 startActivity(intent);
             }
         });

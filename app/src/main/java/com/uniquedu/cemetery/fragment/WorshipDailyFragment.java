@@ -50,7 +50,7 @@ public class WorshipDailyFragment extends BaseFragment {
     private DailyAdapter mAdapter;
     private RequestQueue mRequestQueue;
     private int page = 1;
-    private Dead dead;
+    private String deadId;
     private static final int STATE_LOAD_MORE = 0;
     private static final int STATE_LOAD_REFRESH = 1;
     private TextView mTextViewNull;
@@ -59,7 +59,7 @@ public class WorshipDailyFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_daily, null);
-        dead = ((DeadHomePageActivity) getActivity()).mDead;
+        deadId = ((DeadHomePageActivity) getActivity()).mDeadId;
         mTextViewNull = (TextView) view.findViewById(R.id.textview_null);
         mPullToRefreshView = (PullToRefreshListView) view.findViewById(R.id.daily_list);
         mListView = mPullToRefreshView.getRefreshableView();
@@ -91,7 +91,7 @@ public class WorshipDailyFragment extends BaseFragment {
         loadmore.put("callback", "callbakename");
         loadmore.put("page", "" + page);
         loadmore.put("rows", "12");
-        loadmore.put("id", dead.getId());
+        loadmore.put("id", deadId);
         getDaily(loadmore, state);
     }
 

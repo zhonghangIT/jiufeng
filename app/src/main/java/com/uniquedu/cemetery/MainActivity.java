@@ -1,10 +1,14 @@
 package com.uniquedu.cemetery;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +18,8 @@ import com.uniquedu.cemetery.adapter.MainPagerAdapter;
 import com.uniquedu.cemetery.fragment.CenterFragment;
 import com.uniquedu.cemetery.fragment.DeadGridFragment;
 import com.uniquedu.cemetery.fragment.InfomationFragment;
+import com.uniquedu.cemetery.utils.APKDownload;
+import com.uniquedu.cemetery.zbar.CameraTestActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public static final int INFOMATION = 0;
     public static final int WORSHIP = 1;
     public static final int CENTER = 2;
+    public static final int SCAN = 3;
     private List<Fragment> mPages;
 
     @Override
@@ -71,6 +78,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
         mTextViewInfomation.setSelected(true);
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("软件更新").setMessage("更新提示").setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNeutralButton("后台更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                APKDownload.download(getApplicationContext(), "http://www.whjfs.com/app/whjfs.apk");
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     public void selectTab() {
@@ -105,6 +124,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.textview_scan:
                 //只有点击扫描的时候是启动一个新的界面去扫描
+                Intent intent = new Intent(getApplicationContext(), CameraTestActivity.class);
+                Log.d("MainActivity", "启动二维码扫描");
+                startActivity(intent);
                 break;
         }
     }

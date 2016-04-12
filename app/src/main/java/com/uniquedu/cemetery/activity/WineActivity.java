@@ -70,6 +70,7 @@ public class WineActivity extends BaseActivity implements View.OnClickListener, 
     private static final int STATE_NAME = 1;
     private static final int STATE_TITLE = 2;
     private static final int STATE_MSG = 3;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +113,7 @@ public class WineActivity extends BaseActivity implements View.OnClickListener, 
         mFlower_grid.setAdapter(mAdapter);
         mFlower_grid.setOnItemClickListener(this);
     }
+
     private void createDIYDialog(final int state) {
         final Dialog dialog = new Dialog(WineActivity.this);
         View dialogView = mInflater.inflate(R.layout.dialog_list, null);
@@ -189,6 +191,7 @@ public class WineActivity extends BaseActivity implements View.OnClickListener, 
         }
         return content;
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -204,7 +207,7 @@ public class WineActivity extends BaseActivity implements View.OnClickListener, 
                 } else {
                     mRequestQueue = Volley.newRequestQueue(this);
                     StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 4 + "&typenum=" + mWine_id,
+                            Address.WONSHIP_THEME + id + "&user=" + name + "&title=" + title + "&content=" + content + "&actiontype=" + 6 + "&typenum=" + mWine_id,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {

@@ -1,6 +1,5 @@
 package com.uniquedu.cemetery.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,7 +25,6 @@ import com.uniquedu.cemetery.BaseActivity;
 import com.uniquedu.cemetery.BaseFragment;
 import com.uniquedu.cemetery.R;
 import com.uniquedu.cemetery.adapter.DeadHomePagerAdapter;
-import com.uniquedu.cemetery.bean.Dead;
 import com.uniquedu.cemetery.bean.DeadCallBack;
 import com.uniquedu.cemetery.fragment.AnthologyFragment;
 import com.uniquedu.cemetery.fragment.DeadInfomationFragment;
@@ -52,14 +48,14 @@ public class DeadHomePageActivity extends BaseActivity {
     private ViewPager mViewPager;
     private List<BaseFragment> mPages;
     private DeadHomePagerAdapter mAdapter;
-    public Dead mDead;
+    public String mDeadId;
     private DeadInfomationFragment deadInfoFragment;
     private DeadWorshipFragment deadFragment;
     private WorshipDailyFragment worshipDailyFragment;
     private PhotoFragment photoFragment;
     public DeadCallBack callBack;
     private boolean isFirst = true;
-
+    public static final String EXTRA_DEAID ="deadId";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +104,7 @@ public class DeadHomePageActivity extends BaseActivity {
      * 请求到灵堂信息，以及逝者的详细信息，刷新灵堂界面以及详细信息界面
      */
     private void getInfomation() {
-        mDead = (Dead) getIntent().getExtras().getSerializable("dead");
+        mDeadId = getIntent().getStringExtra(EXTRA_DEAID);
         StringRequest request = new StringRequest(Request.Method.POST, Address.INFOMATION, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -126,7 +122,7 @@ public class DeadHomePageActivity extends BaseActivity {
                 Type typeToken = new TypeToken<DeadCallBack>() {
                 }.getType();
                 callBack = gson.fromJson(response, typeToken);
-                deadInfoFragment.infodate(callBack.getRows());
+                deadInfoFragment.infodate(callBack);
                 deadFragment.initData(callBack);
                 if (isFirst) {
                     mp3State(callBack);
@@ -144,7 +140,7 @@ public class DeadHomePageActivity extends BaseActivity {
 //                ?callback=callbakename&id=
                 HashMap<String, String> params = new HashMap<>();
                 params.put("callback", "callbakename");
-                params.put("id", mDead.getId());
+                params.put("id", mDeadId);
                 return params;
             }
         };

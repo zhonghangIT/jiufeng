@@ -15,7 +15,11 @@ public class DeadCallBack {
     private String TombType;
     private String ManPhoto;
     private String FlowerState;
+    /**
+     * Cup是香的状态 Incensory是酒的状态
+     */
     private String IncensoryState;
+
     private String CupState;
     private String Mp3State;
     private String total;

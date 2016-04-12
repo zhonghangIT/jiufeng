@@ -218,7 +218,7 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
     private void incensoryState(DeadCallBack back) {
         mImageViewWine.setVisibility(View.VISIBLE);
         mImageViewWine2.setVisibility(View.VISIBLE);
-        switch (back.getCupState()) {
+        switch (back.getIncensoryState()) {
             case "1":
                 mImageViewWine.setImageResource(R.mipmap.wine1);
                 mImageViewWine2.setImageResource(R.mipmap.wine1);
@@ -246,7 +246,7 @@ public class DeadWorshipFragment extends BaseFragment implements View.OnClickLis
     //香
     private void cupState(DeadCallBack back) {
         mImageViewThus.setVisibility(View.VISIBLE);
-        switch (back.getIncensoryState()) {
+        switch (back.getCupState()) {
             case "1":
                 mImageViewThus.setImageResource(R.mipmap.thus_red);
                 break;

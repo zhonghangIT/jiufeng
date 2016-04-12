@@ -21,9 +21,9 @@ import java.util.List;
 public class DailyAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Daily> mDailies;
-    private SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat formatYear=new SimpleDateFormat("yyyy年");
-    private SimpleDateFormat formatTime=new SimpleDateFormat("MM月dd日");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat formatYear = new SimpleDateFormat("yyyy年");
+    private SimpleDateFormat formatTime = new SimpleDateFormat("MM月dd日");
 
     public DailyAdapter(LayoutInflater inflater, List<Daily> dailies) {
         mInflater = inflater;
@@ -61,18 +61,23 @@ public class DailyAdapter extends BaseAdapter {
         }
         vh = (ViewHolder) convertView.getTag();
         Daily daily = mDailies.get(position);
-        vh.textViewName.setText(daily.getActionUser()+"  为逝者 "+daily.getActionName());
+        vh.textViewName.setText(daily.getActionUser() + "  为逝者 " + daily.getActionName());
         vh.textViewContent.setText(daily.getArticleContent());
         vh.textViewTitle.setText(daily.getTitle());
-        vh.textViewIP.setText(daily.getIPAddress());
+        String ip = daily.getIPAddress();
+        String filed[] = ip.split("\\.");
+        if (filed.length > 2) {
+            ip = filed[0] + "." + filed[1] + ".**.**";
+        }
+        vh.textViewIP.setText(ip);
+
         try {
-            Date date=format.parse(daily.getCreateDate());
+            Date date = format.parse(daily.getCreateDate());
             vh.textViewTime.setText(formatTime.format(date));
             vh.textViewYear.setText(formatYear.format(date));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
 
         return convertView;
