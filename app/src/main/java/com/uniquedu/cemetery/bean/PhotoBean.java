@@ -7,22 +7,22 @@ import android.os.Parcelable;
  * Created by ZhongHang on 2016/3/15.
  */
 public class PhotoBean implements Parcelable {
-    private String Id;
-    private String MemorialID;
-    private String IsDisplay;
-    private String Photo;
-    private String Title;
-    private String Summary;
-    private String MemorialNumber;
+    private String Id="";
+    private String MemorialID="";
+    private String IsDisplay="";
+    private String Photo="";
+    private String Title="";
+    private String Summary="";
+    private String MemorialNumber="";
     private boolean isChecked;
-    private String CreateDate;
-    private String CreateUser;
-    private String ChangeDate;
-    private String ChangeUser;
-    private String CurrentLoginUserId;
-    private String Data1;
-    private String Data2;
-    private String Data3;
+    private String CreateDate="";
+    private String CreateUser="";
+    private String ChangeDate="";
+    private String ChangeUser="";
+    private String CurrentLoginUserId="";
+    private String Data1="";
+    private String Data2="";
+    private String Data3="";
 
     public PhotoBean() {
     }

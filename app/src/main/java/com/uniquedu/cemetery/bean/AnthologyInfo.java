@@ -4,27 +4,27 @@ package com.uniquedu.cemetery.bean;
  * Created by ZhongHang on 2016/3/28.
  */
 public class AnthologyInfo {
-    private String Id;
-    private String MemorialID;
-    private String MemorialNumber;
-    private String IsDisplay;
-    private String ArticleClass;
-    private String ArticleClassID;
-    private String ArticleTitle;
-    private String ArticleHtml;
-    private String CreateDate;
-    private String CreateUser;
-    private String ChangeDate;
-    private String ChangeUser;
-    private String ArticleImg;
-    private String ArticleSource;
-    private String CurrentLoginUserId;
-    private String Data1;
+    private String Id="";
+    private String MemorialID="";
+    private String MemorialNumber="";
+    private String IsDisplay="";
+    private String ArticleClass="";
+    private String ArticleClassID="";
+    private String ArticleTitle="";
+    private String ArticleHtml="";
+    private String CreateDate="";
+    private String CreateUser="";
+    private String ChangeDate="";
+    private String ChangeUser="";
+    private String ArticleImg="";
+    private String ArticleSource="";
+    private String CurrentLoginUserId="";
+    private String Data1="";
 
     public AnthologyInfo() {
     }
 
-    private String Data2;
+    private String Data2="";
 
     public String getId() {
         return Id;
@@ -170,5 +170,5 @@ public class AnthologyInfo {
         Data3 = data3;
     }
 
-    private String Data3;
+    private String Data3="";
 }

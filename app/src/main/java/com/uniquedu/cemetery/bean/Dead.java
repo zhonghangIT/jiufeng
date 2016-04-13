@@ -7,23 +7,23 @@ import java.io.Serializable;
  * 逝者信息
  */
 public class Dead implements Serializable {
-    private String RowNumber;
-    private String IsAudit;
-    private String id;
-    private String ManPhoto;
-    private String Number;
-    private String MemorialName;
-    private String CreateDate;
-    private String CreateUser;
-    private String ChangeDate;
-    private String ChangeUser;
-    private String AuditDate;
-    private String AuditUser;
-    private String UpdateDate;
-    private String TombType;
-    private String man;
-    private String woman;
-    private String ClickCount;
+    private String RowNumber="";
+    private String IsAudit="";
+    private String id="";
+    private String ManPhoto="";
+    private String Number="";
+    private String MemorialName="";
+    private String CreateDate="";
+    private String CreateUser="";
+    private String ChangeDate="";
+    private String ChangeUser="";
+    private String AuditDate="";
+    private String AuditUser="";
+    private String UpdateDate="";
+    private String TombType="";
+    private String man="";
+    private String woman="";
+    private String ClickCount="";
 
 
     public String getRowNumber() {

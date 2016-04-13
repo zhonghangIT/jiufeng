@@ -7,15 +7,15 @@ import java.util.ArrayList;
  * 灵堂
  */
 public class Hall {
-    private String id;
-    private String MemorialNumber;
-    private String TombType;
-    private String ManPhoto;
-    private String FlowerState;
-    private String IncensoryState;
-    private String CupState;
-    private String Mp3State;
-    private String total;
+    private String id="";
+    private String MemorialNumber="";
+    private String TombType="";
+    private String ManPhoto="";
+    private String FlowerState="";
+    private String IncensoryState="";
+    private String CupState="";
+    private String Mp3State="";
+    private String total="";
     private ArrayList<DeadInformation> rows;
 
     public String getId() {

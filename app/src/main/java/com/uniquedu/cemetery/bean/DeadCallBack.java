@@ -8,21 +8,21 @@ import java.util.List;
  * 进入在线祭扫界面的获取的信息
  */
 public class DeadCallBack {
-    private String exCode;
-    private String exMsg;
-    private String id;
-    private String MemorialNumber;
-    private String TombType;
-    private String ManPhoto;
-    private String FlowerState;
+    private String exCode="";
+    private String exMsg="";
+    private String id="";
+    private String MemorialNumber="";
+    private String TombType="";
+    private String ManPhoto="";
+    private String FlowerState="";
     /**
      * Cup是香的状态 Incensory是酒的状态
      */
-    private String IncensoryState;
+    private String IncensoryState="";
 
-    private String CupState;
-    private String Mp3State;
-    private String total;
+    private String CupState="";
+    private String Mp3State="";
+    private String total="";
     private List<DeadInformation> rows;
 
     public String getExCode() {

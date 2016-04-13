@@ -5,20 +5,20 @@ package com.uniquedu.cemetery.bean;
  * 祭扫日志信息
  */
 public class Daily {
-    private String Id;
-    private String MemorialID;
-    private String MemorialNumber;
-    private String CreateDate;
-    private String Title;
-    private String ArticleContent;
-    private String IPAddress;
-    private String ActionImg;
-    private String ActionName;
-    private String ActionUser;
-    private String IsDisplay;
-    private String CurrentLoginUserId;
-    private String Data1;
-    private String Data2;
+    private String Id="";
+    private String MemorialID="";
+    private String MemorialNumber="";
+    private String CreateDate="";
+    private String Title="";
+    private String ArticleContent="";
+    private String IPAddress="";
+    private String ActionImg="";
+    private String ActionName="";
+    private String ActionUser="";
+    private String IsDisplay="";
+    private String CurrentLoginUserId="";
+    private String Data1="";
+    private String Data2="";
 
     public String getId() {
         return Id;
@@ -140,5 +140,5 @@ public class Daily {
         Data3 = data3;
     }
 
-    private String Data3;
+    private String Data3="";
 }

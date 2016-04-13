@@ -4,8 +4,8 @@ package com.uniquedu.cemetery.bean;
  * Created by ZhongHang on 2016/3/29.
  */
 public class WorshipMessage {
-    private String Text;
-    private String Value;
+    private String Text="";
+    private String Value="";
 
     public String getText() {
         return Text;

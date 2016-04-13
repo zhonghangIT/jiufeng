@@ -8,18 +8,18 @@ import android.os.Parcelable;
  * 选集
  */
 public class Anthology implements Parcelable {
-    private String RowNumber;
-    private String id;
-    private String MemorialID;
-    private String MemorialNumber;
-    private String IsDisplay;
-    private String ArticleClass;
-    private String ArticleTitle;
-    private String CreateDate;
-    private String CreateUser;
-    private String ChangeDate;
-    private String ChangeUser;
-    private String ArticleImg;
+    private String RowNumber="";
+    private String id="";
+    private String MemorialID="";
+    private String MemorialNumber="";
+    private String IsDisplay="";
+    private String ArticleClass="";
+    private String ArticleTitle="";
+    private String CreateDate="";
+    private String CreateUser="";
+    private String ChangeDate="";
+    private String ChangeUser="";
+    private String ArticleImg="";
 
     public String getArticleSource() {
         return ArticleSource;

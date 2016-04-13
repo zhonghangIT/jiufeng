@@ -7,24 +7,24 @@ import java.io.Serializable;
  * 逝者详细信息
  */
 public class DeadInformation implements Serializable {
-    private String id;
-    private String MemorialNumber;
-    private String DeadName;//逝者姓名
-    private String sex;//性别
-    private String nationality;//民族
-    private String birthday;//生日
-    private String feteday;//离世时间
-    private String nativeplace;//籍贯
-    private String MemorialID;//纪念馆ID
-    private String Summary;//简介
-    private String CreateDate;//创建时间
-    private String CreateUser;//创建者
-    private String ChangeDate;//更改时间
-    private String ChangeUser;//更改者
-    private String ArticleSummary;//生平
-    private String Filename;//图片
-    private String TombDeathPersonId;
-    private String BFYEAR;//生卒
+    private String id="";
+    private String MemorialNumber="";
+    private String DeadName="";//逝者姓名
+    private String sex="";//性别
+    private String nationality="";//民族
+    private String birthday="";//生日
+    private String feteday="";//离世时间
+    private String nativeplace="";//籍贯
+    private String MemorialID="";//纪念馆ID
+    private String Summary="";//简介
+    private String CreateDate="";//创建时间
+    private String CreateUser="";//创建者
+    private String ChangeDate="";//更改时间
+    private String ChangeUser="";//更改者
+    private String ArticleSummary="";//生平
+    private String Filename="";//图片
+    private String TombDeathPersonId="";
+    private String BFYEAR="";//生卒
 
     public String getId() {
         return id;
