@@ -1,6 +1,7 @@
 package com.uniquedu.cemetery.zbar;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -11,15 +12,21 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uniquedu.cemetery.BaseActivity;
 import com.uniquedu.cemetery.R;
 import com.uniquedu.cemetery.activity.DeadHomePageActivity;
+import com.uniquedu.cemetery.utils.APKDownload;
 
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -36,12 +43,9 @@ public class CameraTestActivity extends BaseActivity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private Handler autoFocusHandler;
-
     TextView scanText;
-    Button scanButton;
-
     ImageScanner scanner;
-
+    ImageView mImageViewLine;
     private boolean barcodeScanned = false;
     private boolean previewing = true;
 
@@ -54,6 +58,9 @@ public class CameraTestActivity extends BaseActivity {
         setContentView(R.layout.activity_zbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         autoFocusHandler = new Handler();
+        mImageViewLine = (ImageView) findViewById(R.id.imageview_line);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.up_down);
+        mImageViewLine.startAnimation(animation);
         //判断有无该权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -79,20 +86,7 @@ public class CameraTestActivity extends BaseActivity {
 
         scanText = (TextView) findViewById(R.id.scanText);
 
-        scanButton = (Button) findViewById(R.id.ScanButton);
 
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (barcodeScanned) {
-                    barcodeScanned = false;
-                    scanText.setText("Scanning...");
-                    mCamera.setPreviewCallback(previewCb);
-                    mCamera.startPreview();
-                    previewing = true;
-                    mCamera.autoFocus(autoFocusCB);
-                }
-            }
-        });
     }
 
     @Override
@@ -159,12 +153,35 @@ public class CameraTestActivity extends BaseActivity {
 
                 SymbolSet syms = scanner.getResults();
                 for (Symbol sym : syms) {
-                    scanText.setText("barcode result " + sym.getData());
-                    barcodeScanned = true;
-                    Intent intent = new Intent(getApplicationContext(), DeadHomePageActivity.class);
-                    intent.putExtra(DeadHomePageActivity.EXTRA_DEAID, "3472");
-                    startActivity(intent);
-                    finish();
+                    String results = sym.getData();
+                    if (!TextUtils.isEmpty(results)) {
+                        scanText.setText("barcode result " + sym.getData());
+                        barcodeScanned = true;
+                        String content = sym.getData();
+                        if (!TextUtils.isEmpty(content) && content.contains("www.whjfs.com")) {
+//                            http://www.whjfs.com/online/grave.html?id=1065
+                            Intent intent = new Intent(getApplicationContext(), DeadHomePageActivity.class);
+                            intent.putExtra(DeadHomePageActivity.EXTRA_DEAID, results.substring(results.lastIndexOf('=') + 1, results.length()).trim());
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            AlertDialog dialog = new AlertDialog.Builder(CameraTestActivity.this).setTitle("扫描错误").setMessage("扫描二维码信息有误，请重新扫描").setNeutralButton("重新扫描", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    if (barcodeScanned) {
+                                        barcodeScanned = false;
+                                        scanText.setText("Scanning...");
+                                        mCamera.setPreviewCallback(previewCb);
+                                        mCamera.startPreview();
+                                        previewing = true;
+                                        mCamera.autoFocus(autoFocusCB);
+                                    }
+                                }
+                            }).setCancelable(false).show();
+                        }
+
+                    }
                 }
             }
         }

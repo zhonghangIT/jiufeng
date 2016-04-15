@@ -41,7 +41,7 @@ public class WebInfomationActivity extends BaseActivity {
         //启用支持javascript
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

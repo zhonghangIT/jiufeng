@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
+        android:layout_height="match_parent"></FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageview_broder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/scanner_border" />
+
+    <ImageView
+        android:id="@+id/imageview_line"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/scanner_line" />
 
     <TextView
         android:id="@+id/scanText"
-        android:text="Scanning..."
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </TextView>
-    <Button
-        android:id="@+id/ScanButton"
-        android:text="Scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
-</LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageview_broder"
+        android:text="正在扫描二维码"></TextView>
+
+</RelativeLayout>
