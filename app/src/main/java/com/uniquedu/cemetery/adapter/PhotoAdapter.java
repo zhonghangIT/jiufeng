@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.uniquedu.cemetery.Address;
@@ -44,12 +45,18 @@ public class PhotoAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private List<List<Boolean>> mListCheckend;
-    private int lines;
+    public List<PhotoBean> getListCheckedPhoto() {
+        return mListCheckedPhoto;
+    }
+
+    private List<PhotoBean> mListCheckedPhoto = new ArrayList<>();
     private boolean isEditor = false;
 
     public void setEditor(boolean editor) {
         isEditor = editor;
+        if (editor) {
+            mListCheckedPhoto = new ArrayList<>();
+        }
         notifyDataSetChanged();
     }
 
@@ -93,7 +100,6 @@ public class PhotoAdapter extends BaseAdapter {
         if (items.size() > 0) {
             mLists.add(items);
         }
-        lines = mLists.size();
         System.out.print(mLists.size());
     }
 
@@ -181,6 +187,12 @@ public class PhotoAdapter extends BaseAdapter {
             public void onClick(View v) {
                 item.setChecked(!cb.isSelected());
                 cb.setSelected(!cb.isSelected());
+                if (cb.isSelected()) {
+                    mListCheckedPhoto.add(item);
+                } else {
+                    mListCheckedPhoto.remove(item);
+                }
+
             }
         });
 

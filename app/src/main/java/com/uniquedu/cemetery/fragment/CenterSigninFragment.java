@@ -1,5 +1,6 @@
 package com.uniquedu.cemetery.fragment;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +30,16 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.uniquedu.cemetery.Address;
 import com.uniquedu.cemetery.BaseFragment;
 import com.uniquedu.cemetery.R;
+import com.uniquedu.cemetery.bean.SignIn;
+import com.uniquedu.cemetery.utils.SharedPreferencesKey;
+import com.uniquedu.cemetery.utils.SharedPreferencesUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -119,24 +128,43 @@ public class CenterSigninFragment extends BaseFragment {
                     @Override
                     public void onResponse(String response) {
                         Log.d("login", "登录成功:" + response);
-                        System.out.println("登录成功:" + response);
-                        Toast.makeText(CenterSigninFragment.this.getContext(), "登录成功:" + response, Toast.LENGTH_SHORT).show();
+                        if (TextUtils.isEmpty(response)) {
+                            return;
+                        }
+                        response = response.trim();
+                        if (response.contains("callback")) {
+                            response = response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1);
+                        }
+                        Gson gson = new Gson();
+                        SignIn signIn = gson.fromJson(response, SignIn.class);
+                        if (signIn.getExCode().equals("1")) {
+                            Toast.makeText(CenterSigninFragment.this.getContext(), signIn.getExMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            //此处登录成功
+                            SharedPreferencesUtil.saveData(getActivity().getApplicationContext(), "login", true);
+                            SharedPreferencesUtil.saveData(getActivity().getApplicationContext(), "signIn", response);
+                            //切换到登录成功的fragment
+                            ((CenterFragment) getParentFragment()).replace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("login", "登录失败" + error.networkResponse.statusCode);
+                        Log.d("login", "登录失败,请重新登录");
                         System.out.println("登录失败" + error.networkResponse.statusCode);
                         Toast.makeText(CenterSigninFragment.this.getContext(), "登录失败" + error.networkResponse.statusCode, Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
+                        //登录时提交的参数
                         return params;
                     }
 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
+                        //返回验证码的头文件。必须是一个会话，里面存储了seesion。在下载图片时保存了该数据
                         return cookieMap;
                     }
                 };

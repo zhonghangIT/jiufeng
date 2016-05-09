@@ -10,11 +10,11 @@ import java.io.IOException;
  * Created by ZhongHang on 2016/4/25.
  */
 public class BitmapUtils {
-    private static void zipImage(String from, String savePath) {
+    public static void zipImage(String from, String savePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(from, options);
-        options.inSampleSize = computeInitialSampleSize(options, -1, 480*800);
+        options.inSampleSize = computeSampleSize(options, -1, 480 * 800);
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(from, options);
         try {

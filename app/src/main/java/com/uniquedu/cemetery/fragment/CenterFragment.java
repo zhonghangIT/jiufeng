@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.uniquedu.cemetery.BaseFragment;
 import com.uniquedu.cemetery.R;
+import com.uniquedu.cemetery.utils.SharedPreferencesUtil;
 
 /**
  * Created by ZhongHang on 2016/3/4.
@@ -25,10 +26,20 @@ public class CenterFragment extends BaseFragment {
         mFrameLayout = (FrameLayout) view.findViewById(R.id.frame_container);
         centerSigninFragment = new CenterSigninFragment();
         signInManagerFragment = new SignInManagerFragment();
-        getChildFragmentManager().beginTransaction().add(R.id.frame_container, centerSigninFragment, "login").commit();
+        boolean isLogin = (boolean) SharedPreferencesUtil.getData(getContext().getApplicationContext(), "login", false);
+        if (isLogin) {
+            getChildFragmentManager().beginTransaction().add(R.id.frame_container, signInManagerFragment, "manager").commit();
+        } else {
+            getChildFragmentManager().beginTransaction().add(R.id.frame_container, centerSigninFragment, "login").commit();
+        }
         getChildFragmentManager().executePendingTransactions();
 
         return view;
+    }
+
+    public void replace() {
+        getChildFragmentManager().beginTransaction().replace(R.id.frame_container, signInManagerFragment, "manager").commit();
+        getChildFragmentManager().executePendingTransactions();
     }
 
     @Override

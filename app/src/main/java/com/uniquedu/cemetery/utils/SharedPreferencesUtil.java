@@ -19,12 +19,11 @@ public class SharedPreferencesUtil {
      * @param data
      */
     public static void saveData(Context context, String key, Object data) {
-
+        if (data == null) return;
         String type = data.getClass().getSimpleName();
         SharedPreferences sharedPreferences = context
                 .getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         if ("Integer".equals(type)) {
             editor.putInt(key, (Integer) data);
         } else if ("Boolean".equals(type)) {
