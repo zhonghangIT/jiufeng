@@ -33,6 +33,10 @@ public class PhotoAdapter extends BaseAdapter {
         OnItemListener = onItemListener;
     }
 
+    public boolean isEditor() {
+        return isEditor;
+    }
+
     private OnItemClick OnItemListener;
 
     public interface OnItemClick {

@@ -2,6 +2,8 @@ package com.uniquedu.cemetery.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -50,17 +52,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.HttpStatus;
+import cz.msebera.android.httpclient.ParseException;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import cz.msebera.android.httpclient.impl.client.HttpClients;
+import cz.msebera.android.httpclient.util.EntityUtils;
 import me.dm7.barcodescanner.core.ViewFinderView;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -69,6 +90,7 @@ import okhttp3.RequestBody;
  * Created by ZhongHang on 2016/4/26.
  */
 public class ManagerPhotoActivity extends BaseActivity implements View.OnClickListener {
+    private static final int REQUEST_IMAGE = 0x23;
     private ListView mListView;
     private PullToRefreshListView mPullRefreshView;
     private LayoutInflater mInflater;
@@ -259,10 +281,22 @@ public class ManagerPhotoActivity extends BaseActivity implements View.OnClickLi
             case R.id.imageview_edit:
                 photoEdit(true);
                 mAdapter.setEditor(true);
+
                 break;
             case R.id.imageview_camera:
                 //此处弹出popupwindow
-                createPopupWindow();
+//                createPopupWindow();
+
+                Intent intent = new Intent(this, MultiImageSelectorActivity.class);
+// 是否显示调用相机拍照
+                intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
+// 最大图片选择数量
+                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9);
+// 设置模式 (支持 单选/MultiImageSelectorActivity.MODE_SINGLE 或者 多选/MultiImageSelectorActivity.MODE_MULTI)
+                intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_SINGLE);
+// 默认选择图片,回填选项(支持String ArrayList)
+//                intent.putStringArrayListExtra(MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, defaultDataArray);
+                startActivityForResult(intent, REQUEST_IMAGE);
                 break;
             case R.id.textview_cancel:
                 photoEdit(false);
@@ -271,44 +305,151 @@ public class ManagerPhotoActivity extends BaseActivity implements View.OnClickLi
             case R.id.imageview_delete:
                 photoEdit(false);
                 mAdapter.setEditor(false);
+                deletePhotos(mAdapter.getListCheckedPhoto());
                 Toast.makeText(ManagerPhotoActivity.this, "选中照片张数" + mAdapter.getListCheckedPhoto().size(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
+    private void deletePhotos(List<PhotoBean> photos) {
+        if (photos.size() == 0) {
+            return;
+        }
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("callback", "callback");
+        builder.add("account", signIn.getAccount());
+        builder.add("token", signIn.getToken());
+        String ids = "(";
+        for (PhotoBean photo : photos) {
+            ids += photo.getId() + ",";
+        }
+        ids += ")";
+        builder.add("photoIDs", ids);
+        RequestBody body = builder.build();
+        okhttp3.Request request = new okhttp3.Request.Builder().post(body).url("http://www.whjfs.com/mvcwebmis/nologin/AppDeleteMemorialPhotos").build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //网络连接错误
+                Log.d("managerPhoto", "网络连接返回数据错误");
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                //网络连接成功
+                Log.d("managerPhoto", "网络连接返回数据正常" + response.body().string());
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && (requestCode == RESULT_LOAD_IMAGE || requestCode == RESULT_CAMERA_IMAGE)) {
-            Uri selectedImage = data.getData();
-            String picturePath = getImgPath(selectedImage);
-            File file = new File(Environment.getExternalStorageDirectory() + "/upload.jpg");
-            Toast.makeText(ManagerPhotoActivity.this, getCacheDir() + "/upload.jpg", Toast.LENGTH_SHORT).show();
-            if (!file.exists()) {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                // 获取返回的图片列表
+                List<String> paths = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                // 处理你自己的逻辑 ....
+                for (String path : paths) {
+                    Log.d("MainActivity", "图片的地址：" + path);
+                }
+                String picturePath = paths.get(0);
+                File file = new File(Environment.getExternalStorageDirectory() + "/upload.jpg");
+                Toast.makeText(ManagerPhotoActivity.this, getCacheDir() + "/upload.jpg", Toast.LENGTH_SHORT).show();
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                BitmapUtils.zipImage(picturePath, file.getAbsolutePath());
+                postFileOk("http://www.whjfs.com/mvcwebmis/nologin/AppNewMemorialPhoto", file.getAbsolutePath());
+
+            }
+        }
+
+    }
+
+    private void postFileHttpClient(final String url, final String filePath) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                {
+                    //创建HttpClient客户端
+                    HttpClient httpclient = HttpClients.createDefault();
+                    try {
+                        HttpPost httppost = new HttpPost(url);//创建提交的方法为post
+                        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                        builder.addBinaryBody("fileData", new File(filePath));
+                        builder.addTextBody("callback", "callback");
+                        builder.addTextBody("photoTitle", "20160512");
+                        builder.addTextBody("account", signIn.getAccount());
+                        builder.addTextBody("token", signIn.getToken());
+                        httppost.setEntity(builder.build());
+                        HttpResponse response = httpclient.execute(httppost);
+                        int statusCode = response.getStatusLine().getStatusCode();
+                        if (statusCode == HttpStatus.SC_OK) {
+                            System.out.println("服务器正常响应.....");
+                            HttpEntity resEntity = response.getEntity();
+                            System.out.println(EntityUtils.toString(resEntity));//httpclient自带的工具类读取返回数据
+                            System.out.println(resEntity.getContent());
+                            EntityUtils.consume(resEntity);
+                        }
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            httpclient.getConnectionManager().shutdown();
+                        } catch (Exception ignore) {
+
+                        }
+                    }
                 }
             }
-            BitmapUtils.zipImage(picturePath, file.getAbsolutePath());
-            postFileOk("http://www.whjfs.com/mvcwebmis/nologin/AppNewMemorialPhoto", file.getAbsolutePath());
-//            postFile(file.getPath());
-            Log.d("MainActivity", "图片的地址：" + picturePath);
+        }).start();
+    }
+
+    public static byte[] getBytes(String filePath) {
+        byte[] buffer = null;
+        try {
+            File file = new File(filePath);
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return buffer;
     }
 
     private void postFileOk(String url, String filePath) {
         OkHttpClient mOkHttpClient = new OkHttpClient();
-        File file = new File(filePath);
-//        .addFormDataPart("callBack", "callback")
-//                .addFormDataPart("account", signIn.getAccount())
-//                .addFormDataPart("Token", signIn.getToken())
-//                .addFormDataPart("photoTitle", "callback")
-        url = url + "?callBack=callback&account=" + signIn.getAccount() + "&Token=" + signIn.getToken();
-        RequestBody body = new MultipartBody.Builder()
-                .addFormDataPart("fileData", "fileData", MultipartBody.create(MultipartBody.FORM, file)).build();
-
+        byte[] bytes = getBytes(filePath);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        MultipartBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM).addFormDataPart("callback", "callback")
+                .addFormDataPart("account", signIn.getAccount())
+                .addFormDataPart("token", signIn.getToken())
+                .addFormDataPart("photoTitle", format.format(new Date())).addFormDataPart("fileData", new File(filePath).getName(), RequestBody.create(MediaType.parse("image/jpg"), bytes)).build();
         okhttp3.Request request = new okhttp3.Request.Builder().post(body).url(url).build();
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -320,111 +461,10 @@ public class ManagerPhotoActivity extends BaseActivity implements View.OnClickLi
             public void onResponse(Call call, okhttp3.Response response) throws IOException {
                 String result = response.body().string();
                 Log.d("ManagerPhotoActivity", "网络连接返回数据" + result);
-//                Toast.makeText(ManagerPhotoActivity.this, "上传返回的信息" + response.body().string(), Toast.LENGTH_SHORT).show();
+//              Toast.makeText(ManagerPhotoActivity.this, "上传返回的信息" + response.body().string(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void postFile(String filePath) {
-        //这里使用了自己定义的Request
-        HashMap<String, File> params = new HashMap<>();
-        File file = new File(filePath);
-        params.put("fileData", file);
-        final HashMap<String, String> stringParams = new HashMap<>();
-        stringParams.put("callback", "callback");
-        stringParams.put("account", signIn.getAccount());
-        stringParams.put("token", signIn.getToken());
-        stringParams.put("photoTitle", "");
-        String url = "http://www.whjfs.com/mvcwebmis/nologin/AppNewMemorialPhoto";
 
-        PostFileRequest request = new PostFileRequest(Request.Method.POST, url, params, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("ManagerPhoto", "上传返回的信息" + response);
-                Toast.makeText(ManagerPhotoActivity.this, "上传返回的信息" + response, Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("ManagerPhoto", "连接网络错误" + error.networkResponse.statusCode);
-                Toast.makeText(ManagerPhotoActivity.this, "连接网络错误", Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return stringParams;
-            }
-        };
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(request);
-    }
-
-    private String getImgPath(Uri selectedImage) {
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-        Cursor cursor = getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
-
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-        return picturePath;
-    }
-
-    private static final int RESULT_LOAD_IMAGE = 0x23;
-    private static final int RESULT_CAMERA_IMAGE = 0x24;
-
-    private void createPopupWindow() {
-        View view = getLayoutInflater().inflate(R.layout.pop_select, null);
-        TextView textviewCancel = (TextView) view.findViewById(R.id.textview_cancel);
-        TextView textviewCamera = (TextView) view.findViewById(R.id.textview_camera);
-        TextView textviewGalley = (TextView) view.findViewById(R.id.textview_galley);
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.textview_cancel:
-                        popupWindow.dismiss();
-                        break;
-                    case R.id.textview_camera: {
-                        //启动系统摄像头
-                        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(i, RESULT_CAMERA_IMAGE);
-                        popupWindow.dismiss();
-                    }
-                    break;
-                    case R.id.textview_galley: {
-                        Intent i = new Intent(
-                                Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                        startActivityForResult(i, RESULT_LOAD_IMAGE);
-                        popupWindow.dismiss();
-                    }
-                    break;
-                }
-            }
-        };
-        textviewCancel.setOnClickListener(listener);
-        textviewCamera.setOnClickListener(listener);
-        textviewGalley.setOnClickListener(listener);
-        popupWindow = new PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        ColorDrawable cd = new ColorDrawable(0x000000);
-        popupWindow.setBackgroundDrawable(cd);
-        //产生背景变暗效果
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.4f;
-        getWindow().setAttributes(lp);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            //在dismiss中恢复透明度
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getWindow().getAttributes();
-                lp.alpha = 1f;
-                getWindow().setAttributes(lp);
-            }
-        });
-        popupWindow.showAtLocation(findViewById(R.id.linear_content), Gravity.CENTER, 0, 0);
-    }
 }

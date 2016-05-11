@@ -14,12 +14,12 @@ public class BitmapUtils {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(from, options);
-        options.inSampleSize = computeSampleSize(options, -1, 480 * 800);
+        options.inSampleSize = computeSampleSize(options, -1, 768 * 1024);
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(from, options);
         try {
             FileOutputStream fos = new FileOutputStream(savePath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0x5a, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 95, fos);
             fos.flush();
             fos.close();
         } catch (IOException e) {
