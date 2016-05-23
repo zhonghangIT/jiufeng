@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'zhonghang'
-            keyPassword '123456'
-            storeFile file('C:/Users/ZhongHang/Desktop/wuhanjiufeng/jiufengshankey.jks')
-            storePassword '123456'
-        }
     }
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
